@@ -18,16 +18,7 @@ def generate_content(db: Session, topic: str) -> str:
       search_term = crud.create_search_term(db, topic)
       if not search_term:
          search_term = crud.create_search_term(db, topic)
-
-      # response = client.generate_text(
-      #    model="gemini",
-      #    prompt=types.Prompt(
-      #       text=f"Write a blog post about {topic} using the keyword {search_term}.",
-      #    ),
-      #    temperature=0.7,
-      #    max_output_tokens=300,
-      # )
-      
+     
 
       response = client.models.generate_content(
           model="gemini-2.0-flash",
