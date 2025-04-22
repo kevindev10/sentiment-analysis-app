@@ -6,5 +6,5 @@ class GeneratePayload(BaseModel):
     topic: str
 
 
-class AnalysisPayload(BaseModel):
+class AnalyzePayload(BaseModel):
     content: str

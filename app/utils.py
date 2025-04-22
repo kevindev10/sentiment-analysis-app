@@ -33,3 +33,36 @@ def generate_content(db: Session, topic: str) -> str:
       crud.create_generated_content(db, generated_text, search_term.id)
 
       return generated_text
+   
+
+
+def analyze_content(db: Session, content: str):
+    with semaphore:
+        search_term = crud.get_search_term(db, content)
+        if not search_term:
+            search_term = crud.create_search_term(db, content)
+        readability = get_readability_score(content)
+        sentiment = get_sentiment_analysis(content)
+        crud.create_sentiment_analysis(db, readability, sentiment, search_term.id)
+        return readability, sentiment
+    
+
+
+def get_readability_score(content: str) -> str:
+    # Simulate readability score for the example
+    # Replace this with actual readability API call if available
+    return "Readability Score: Good"
+
+
+
+def get_sentiment_analysis(content: str) -> str:
+   
+   response = client.models.generate_content(
+          model="gemini-2.0-flash",
+        #   contents=f"Write a blog post about {topic} using the keyword {search_term}."
+          contents =f"Analyze the sentiment of the sentence given below.\n${content}\nThe output should be in the format- Sentiment: Value"
+      )
+
+   print(response.text)
+
+   return response.text
